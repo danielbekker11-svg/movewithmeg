@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#6b4c3b">
+<title>Book a Consultation — Move With Meg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #f9f6f3;
+  --card:     #ffffff;
+  --brown:    #6b4c3b;
+  --brown-d:  #3d2c24;
+  --brown-l:  #c9a090;
+  --rose:     #c9856a;
+  --rose-l:   #f0ddd5;
+  --muted:    #b08070;
+  --ink:      #3d2c24;
+  --soft:     #6b4c3b;
+  --line:     #ede8e0;
+  --lsoft:    #f5efe8;
+  --green:    #3d7a5a;
+  --gbg:      #eaf4ee;
+  --red:      #b33a2a;
+  --rbg:      #fbeee9;
+  --r:        10px;
+  --rlg:      16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+
+.page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 16px 80px;}
+.wrap{width:100%;max-width:480px;}
+
+/* LOGO / HEADER */
+.brand{text-align:center;margin-bottom:32px;}
+.logo-circle{width:100px;height:100px;border-radius:50%;background:var(--brown);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 4px 20px rgba(107,76,59,.25);}
+.logo-icon{font-size:32px;margin-bottom:2px;}
+.logo-text{font-size:9px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.8);text-transform:uppercase;}
+.brand-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:500;letter-spacing:-.01em;color:var(--brown-d);line-height:1;}
+.brand-sub{font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+
+/* INTRO CARD */
+.intro-card{background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);padding:24px;margin-bottom:18px;text-align:center;box-shadow:0 2px 12px rgba(107,76,59,.06);}
+.intro-card h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--brown-d);margin-bottom:8px;}
+.intro-card p{font-size:14px;color:var(--soft);line-height:1.7;}
+.services{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+.service-tag{background:var(--rose-l);color:var(--rose);padding:5px 12px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.03em;}
+
+/* FORM CARD */
+.form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);padding:26px 22px 28px;box-shadow:0 2px 12px rgba(107,76,59,.06);}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--brown-d);margin-bottom:4px;}
+.form-sub{font-size:14px;color:var(--muted);margin-bottom:22px;}
+
+.field{margin-bottom:16px;}
+label{display:block;font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.req{color:var(--rose);margin-left:2px;}
+
+input,select,textarea{width:100%;padding:13px 15px;font-size:16px;font-family:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);color:var(--ink);-webkit-appearance:none;transition:border-color .15s,box-shadow .15s;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brown);box-shadow:0 0 0 3px rgba(107,76,59,.1);}
+textarea{min-height:80px;resize:vertical;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath fill='%23b08070' d='M5.5 7L0 0h11z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+::placeholder{color:#c4b0a8;}
+
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:10px;margin:18px 0;}
+.divider-line{flex:1;height:1px;background:var(--line);}
+.divider-text{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+
+/* TIME SLOTS */
+.slots-wrap{margin-top:6px;}
+.slots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:7px;}
+.slot{padding:11px 6px;text-align:center;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit;color:var(--ink);}
+.slot:hover{border-color:var(--brown);background:var(--lsoft);}
+.slot.selected{background:var(--brown);color:#fff;border-color:var(--brown);}
+.slots-msg{font-size:14px;color:var(--muted);padding:12px 0;}
+
+/* SUBMIT */
+.btn-submit{width:100%;padding:17px;font-size:17px;font-weight:600;font-family:inherit;background:var(--brown);color:#fff;border:none;border-radius:var(--r);cursor:pointer;margin-top:10px;transition:all .15s;letter-spacing:-.01em;position:relative;}
+.btn-submit:hover:not(:disabled){background:var(--brown-d);transform:translateY(-1px);box-shadow:0 4px 16px rgba(107,76,59,.3);}
+.btn-submit:disabled{opacity:.55;cursor:not-allowed;}
+
+/* ERROR */
+.err-box{background:var(--rbg);color:var(--red);padding:11px 15px;border-radius:var(--r);font-size:14px;margin-bottom:14px;display:none;}
+
+/* SUCCESS */
+.success{text-align:center;padding:8px 0;display:none;}
+.check-circle{width:76px;height:76px;border-radius:50%;background:var(--gbg);color:var(--green);font-size:36px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.success h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:var(--brown-d);margin-bottom:10px;}
+.success p{font-size:15px;color:var(--soft);line-height:1.7;margin-bottom:10px;}
+.summary{background:var(--lsoft);border-radius:var(--r);padding:16px 18px;margin:18px 0;text-align:left;}
+.summary .row{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px solid var(--line);}
+.summary .row:last-child{border-bottom:none;}
+.summary .row span{color:var(--muted);}
+.summary .row strong{font-weight:600;color:var(--brown-d);}
+.btn-again{width:100%;padding:14px;font-size:15px;font-weight:500;font-family:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);cursor:pointer;color:var(--ink);margin-top:8px;transition:background .15s;}
+.btn-again:hover{background:var(--lsoft);}
+
+/* FOOTER */
+.footer{margin-top:24px;text-align:center;font-size:13px;color:var(--muted);}
+.footer a{color:var(--brown);text-decoration:none;font-weight:500;}
+
+@media(max-width:400px){.row-2{grid-template-columns:1fr;}}
+@media(min-width:600px){.page{padding:56px 24px 80px;}.brand-name{font-size:38px;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="wrap">
+
+    <!-- BRAND -->
+    <div class="brand">
+      <div class="logo-circle">
+        <div class="logo-icon">🤸</div>
+        <div class="logo-text">Move With Meg</div>
+      </div>
+      <div class="brand-name">Move With Meg</div>
+      <div class="brand-sub">Biokinetics &amp; Wellness</div>
+    </div>
+
+    <!-- INTRO -->
+    <div class="intro-card">
+      <h2>Book your free consultation</h2>
+      <p>Get a personalised movement and wellness plan designed around your body, your goals, and your lifestyle.</p>
+      <div class="services">
+        <span class="service-tag">Movement Assessment</span>
+        <span class="service-tag">Personalised Planning</span>
+        <span class="service-tag">Injury Rehabilitation</span>
+        <span class="service-tag">Sports Performance</span>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card">
+      <h2 class="form-title">Request a consultation</h2>
+      <p class="form-sub">Fill in your details and Meg will confirm your time.</p>
+
+      <div class="err-box" id="errBox"></div>
+
+      <form id="bookForm" novalidate>
+        <div class="field">
+          <label>Your name <span class="req">*</span></label>
+          <input type="text" id="f_name" autocomplete="name" placeholder="Jane Smith" required>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label>Phone <span class="req">*</span></label>
+            <input type="tel" id="f_phone" autocomplete="tel" placeholder="+27 00 000 0000" required>
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="f_email" autocomplete="email" placeholder="jane@email.com">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>What do you need help with? <span class="req">*</span></label>
+          <select id="f_goal" required>
+            <option value="">Choose one…</option>
+            <option>General fitness &amp; wellness</option>
+            <option>Weight loss &amp; body composition</option>
+            <option>Injury rehabilitation</option>
+            <option>Sports performance</option>
+            <option>Chronic pain or condition management</option>
+            <option>Posture &amp; movement correction</option>
+            <option>Other / not sure yet</option>
+          </select>
+        </div>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <div class="divider-text">Pick a time</div>
+          <div class="divider-line"></div>
+        </div>
+
+        <div class="field">
+          <label>Preferred date <span class="req">*</span></label>
+          <input type="date" id="f_date" required>
+        </div>
+
+        <div class="field">
+          <label>Available times <span class="req">*</span></label>
+          <div class="slots-wrap">
+            <div id="slotsContainer" class="slots-msg">Choose a date to see available times.</div>
+            <input type="hidden" id="f_time" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Request Consultation →</button>
+      </form>
+
+      <!-- SUCCESS STATE -->
+      <div class="success" id="successDiv">
+        <div class="check-circle">✓</div>
+        <h2>Request sent!</h2>
+        <p>Meg will review your request and confirm your consultation shortly. Keep an eye on your email!</p>
+        <div class="summary" id="summaryDiv"></div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">You'll receive a confirmation email once Meg approves your booking.</p>
+        <button class="btn-again" onclick="resetForm()">Request a different time</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div id="footerContact"></div>
+      <div style="margin-top:6px;">
+        <a id="igLink" href="#" target="_blank">@movewithmeg</a> on Instagram
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let CFG = {};
+
+async function init() {
+  try {
+    const r = await fetch('/api/config');
+    CFG = await r.json();
+    document.title = `Book a Consultation — Move With Meg`;
+    if (CFG.instagram) {
+      document.getElementById('igLink').href = `https://instagram.com/${CFG.instagram}`;
+      document.getElementById('igLink').textContent = `@${CFG.instagram}`;
+    }
+    if (CFG.phone) document.getElementById('footerContact').textContent = CFG.phone;
+
+    const dateInput = document.getElementById('f_date');
+    const today = new Date();
+    const max   = new Date(today.getTime() + (CFG.advanceDays||30)*86400000);
+    dateInput.min = today.toISOString().split('T')[0];
+    dateInput.max = max.toISOString().split('T')[0];
+    dateInput.addEventListener('change', loadSlots);
+  } catch(e) { showErr('Could not load page. Please refresh.'); }
+}
+
+async function loadSlots() {
+  const date = document.getElementById('f_date').value;
+  const container = document.getElementById('slotsContainer');
+  document.getElementById('f_time').value = '';
+  document.getElementById('submitBtn').disabled = true;
+  if (!date) return;
+
+  // Check if it's a work day
+  const dow = new Date(date+'T00:00:00').getDay();
+  if (CFG.workDays && !CFG.workDays.includes(dow)) {
+    container.className = 'slots-msg';
+    container.innerHTML = '⚠ Consultations are not available on that day. Please choose a weekday.';
+    return;
+  }
+
+  container.className = 'slots-msg';
+  container.textContent = 'Loading available times…';
+
+  try {
+    const r = await fetch(`/api/slots/${date}`);
+    const d = await r.json();
+    if (!d.slots || !d.slots.length) {
+      container.className = 'slots-msg';
+      container.innerHTML = 'No times available on this date. Please try another day.';
+      return;
+    }
+    container.className = 'slots-grid';
+    container.innerHTML = d.slots.map(s =>
+      `<button type="button" class="slot" data-value="${s.value}" onclick="pickSlot(this)">${s.label}</button>`
+    ).join('');
+  } catch(e) {
+    container.className = 'slots-msg';
+    container.textContent = 'Could not load times. Please try again.';
+  }
+}
+
+function pickSlot(btn) {
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('f_time').value = btn.dataset.value;
+  document.getElementById('submitBtn').disabled = false;
+}
+
+document.getElementById('bookForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  hideErr();
+
+  const name  = document.getElementById('f_name').value.trim();
+  const phone = document.getElementById('f_phone').value.trim();
+  const email = document.getElementById('f_email').value.trim();
+  const goal  = document.getElementById('f_goal').value;
+  const date  = document.getElementById('f_date').value;
+  const time  = document.getElementById('f_time').value;
+
+  if (!name)  return showErr('Please enter your name.');
+  if (!phone) return showErr('Please enter your phone number.');
+  if (!goal)  return showErr('Please tell us what you need help with.');
+  if (!date)  return showErr('Please choose a date.');
+  if (!time)  return showErr('Please choose a time.');
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    const r = await fetch('/api/book', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ client_name:name, client_phone:phone, client_email:email, goal, date, time })
+    });
+    const d = await r.json();
+
+    if (!r.ok) {
+      showErr(d.error||'Something went wrong. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Request Consultation →';
+      if (r.status === 409) loadSlots();
+      return;
+    }
+
+    document.getElementById('bookForm').style.display = 'none';
+    document.getElementById('successDiv').style.display = 'block';
+    document.getElementById('summaryDiv').innerHTML = `
+      <div class="row"><span>Service</span><strong>Initial Consultation</strong></div>
+      <div class="row"><span>Date</span><strong>${esc(d.dateFormatted)}</strong></div>
+      <div class="row"><span>Time</span><strong>${esc(d.timeFormatted)}</strong></div>
+      <div class="row"><span>Goal</span><strong>${esc(goal)}</strong></div>
+      ${email?`<div class="row"><span>Confirmation to</span><strong>${esc(email)}</strong></div>`:''}
+    `;
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e) {
+    showErr('Network error. Please check your connection and try again.');
+    btn.disabled = false;
+    btn.textContent = 'Request Consultation →';
+  }
+});
+
+function resetForm() {
+  document.getElementById('bookForm').reset();
+  document.getElementById('bookForm').style.display   = 'block';
+  document.getElementById('successDiv').style.display = 'none';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Request Consultation →';
+  document.getElementById('slotsContainer').className = 'slots-msg';
+  document.getElementById('slotsContainer').textContent = 'Choose a date to see available times.';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showErr(m){const b=document.getElementById('errBox');b.textContent=m;b.style.display='block';b.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function hideErr(){document.getElementById('errBox').style.display='none';}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+init();
+</script>
+</body>
+</html>

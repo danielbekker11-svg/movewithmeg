@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Move With Meg — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f9f6f3;--card:#fff;--brown:#6b4c3b;--brown-d:#3d2c24;--brown-l:#c9a090;
+  --rose:#c9856a;--rose-l:#f0ddd5;--muted:#b08070;--ink:#3d2c24;--soft:#6b4c3b;
+  --line:#ede8e0;--lsoft:#f5efe8;--green:#3d7a5a;--gbg:#eaf4ee;
+  --red:#b33a2a;--rbg:#fbeee9;--amber:#92400e;--abg:#fef3c7;--r:10px;--rlg:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);}
+.login-card{background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);padding:36px 32px;width:100%;max-width:360px;box-shadow:0 4px 24px rgba(107,76,59,.1);}
+.login-logo{text-align:center;margin-bottom:24px;}
+.login-logo .circle{width:72px;height:72px;border-radius:50%;background:var(--brown);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;}
+.login-logo h1{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--brown-d);}
+.login-logo p{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+.field{margin-bottom:16px;}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+input,select,textarea{width:100%;padding:13px 15px;font-size:16px;font-family:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);color:var(--ink);-webkit-appearance:none;transition:border-color .15s,box-shadow .15s;}
+input:focus,select:focus{outline:none;border-color:var(--brown);box-shadow:0 0 0 3px rgba(107,76,59,.1);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 18px;font-size:14px;font-weight:600;font-family:inherit;border:none;border-radius:var(--r);cursor:pointer;transition:all .15s;text-decoration:none;letter-spacing:-.01em;}
+.btn-primary{background:var(--brown);color:#fff;width:100%;padding:15px;}
+.btn-primary:hover{background:var(--brown-d);}
+.btn-sm{padding:8px 14px;font-size:13px;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:#2d5e42;}
+.btn-red{background:var(--rbg);color:var(--red);border:1.5px solid #f0c0b0;}
+.btn-red:hover{background:#f5d8d0;}
+.btn-outline{background:var(--card);color:var(--ink);border:1.5px solid var(--line);}
+.btn-outline:hover{background:var(--lsoft);}
+.btn-ghost{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);}
+.btn-ghost:hover{background:rgba(255,255,255,.25);}
+.btn-nav{background:none;color:rgba(255,255,255,.75);border:none;padding:8px 14px;font-size:14px;font-family:inherit;cursor:pointer;border-radius:var(--r);font-weight:500;transition:all .15s;}
+.btn-nav:hover,.btn-nav.active{background:rgba(255,255,255,.15);color:#fff;}
+.err{background:var(--rbg);color:var(--red);padding:10px 14px;border-radius:var(--r);font-size:14px;margin-bottom:14px;display:none;}
+
+/* SHELL */
+.shell{min-height:100vh;display:none;flex-direction:column;}
+
+/* HEADER */
+.header{background:var(--brown);padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;min-height:60px;}
+.header-brand{display:flex;align-items:center;gap:10px;}
+.header-brand .dot{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.header-brand span{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:#fff;}
+.header-nav{display:flex;gap:2px;}
+.header-right{display:flex;gap:6px;}
+
+/* CONTENT */
+.content{max-width:900px;margin:0 auto;padding:24px 16px 60px;width:100%;}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:24px;}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;}
+.stat-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;letter-spacing:-.02em;color:var(--brown-d);}
+.stat.urgent .stat-value{color:var(--red);}
+
+/* SECTION */
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--brown-d);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 7px;border-radius:999px;font-size:12px;font-weight:700;}
+.badge-amber{background:var(--abg);color:var(--amber);}
+.badge-green{background:var(--gbg);color:var(--green);}
+.badge-muted{background:var(--lsoft);color:var(--muted);}
+
+/* BOOKING CARDS */
+.card-list{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.booking-card{background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);padding:16px 18px;display:flex;flex-direction:column;gap:12px;}
+.booking-card.pending{border-left:4px solid #f59e0b;}
+.booking-card.confirmed{border-left:4px solid var(--green);}
+.booking-card.declined{border-left:4px solid var(--red);opacity:.6;}
+.booking-card.past{border-left:4px solid var(--line);opacity:.65;}
+
+.bc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.bc-name{font-size:16px;font-weight:600;color:var(--brown-d);margin-bottom:2px;}
+.bc-goal{font-size:13px;color:var(--muted);}
+.bc-datetime{text-align:right;white-space:nowrap;}
+.bc-date{font-size:14px;font-weight:600;color:var(--brown-d);}
+.bc-time{font-size:14px;color:var(--muted);margin-top:2px;}
+.bc-contact{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--soft);}
+.bc-contact a{color:var(--brown);text-decoration:none;font-weight:600;}
+.bc-contact a:hover{text-decoration:underline;}
+.bc-actions{display:flex;gap:8px;}
+.status-tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.tag-confirmed{background:var(--gbg);color:var(--green);}
+.tag-declined{background:var(--rbg);color:var(--red);}
+.tag-cancelled{background:var(--lsoft);color:var(--muted);}
+
+/* SCHEDULE */
+.sched-day{margin-bottom:24px;}
+.sched-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:10px;}
+.sched-label.today{color:var(--brown);}
+.sched-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;}
+.sched-time{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--brown);min-width:70px;}
+.sched-info{flex:1;}
+.sched-name{font-weight:600;font-size:15px;color:var(--brown-d);margin-bottom:2px;}
+.sched-goal{font-size:13px;color:var(--muted);margin-bottom:4px;}
+.sched-contact{font-size:13px;}
+.sched-contact a{color:var(--brown);text-decoration:none;font-weight:600;}
+
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:var(--rlg);padding:36px 20px;text-align:center;color:var(--muted);font-size:14px;}
+.empty-icon{font-size:32px;margin-bottom:10px;}
+
+/* TABS (for history) */
+.tabs{display:flex;gap:4px;background:var(--lsoft);padding:3px;border-radius:var(--r);width:fit-content;margin-bottom:14px;}
+.tab{padding:7px 14px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;border-radius:7px;color:var(--muted);font-family:inherit;transition:all .15s;}
+.tab.active{background:var(--card);color:var(--brown-d);box-shadow:0 1px 4px rgba(107,76,59,.1);}
+
+@media(max-width:520px){
+  .bc-top{flex-direction:column;gap:4px;}
+  .bc-datetime{text-align:left;}
+  .bc-actions{flex-direction:column;}
+  .header{flex-direction:column;align-items:flex-start;padding:12px 16px;gap:10px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .sched-item{flex-direction:column;align-items:flex-start;gap:6px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginView">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="circle">🤸</div>
+      <h1>Move With Meg</h1>
+      <p>Dashboard Login</p>
+    </div>
+    <div class="err" id="loginErr"></div>
+    <form id="loginForm">
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="pw" placeholder="Enter your password" autofocus required>
+      </div>
+      <button type="submit" class="btn btn-primary">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="shell" id="shell">
+  <header class="header">
+    <div class="header-brand">
+      <div class="dot">🤸</div>
+      <span>Move With Meg</span>
+    </div>
+    <nav class="header-nav">
+      <button class="btn-nav active" id="navRequests" onclick="showView('requests')">Requests</button>
+      <button class="btn-nav"        id="navSchedule" onclick="showView('schedule')">Schedule</button>
+      <button class="btn-nav"        id="navHistory"  onclick="showView('history')">History</button>
+    </nav>
+    <div class="header-right">
+      <button class="btn btn-sm btn-ghost" onclick="exportCsv()">Export</button>
+      <button class="btn btn-sm btn-ghost" onclick="logout()">Sign Out</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <!-- STATS -->
+    <div class="stats" id="statsRow"></div>
+
+    <!-- REQUESTS VIEW -->
+    <div id="viewRequests">
+      <div class="sec-title">
+        Pending Requests
+        <span class="badge badge-amber" id="pendingBadge">0</span>
+      </div>
+      <div class="card-list" id="pendingList"></div>
+
+      <div class="sec-title" style="margin-top:8px;">
+        Upcoming Confirmed
+        <span class="badge badge-green" id="confirmedBadge">0</span>
+      </div>
+      <div class="card-list" id="confirmedList"></div>
+    </div>
+
+    <!-- SCHEDULE VIEW -->
+    <div id="viewSchedule" style="display:none">
+      <div class="sec-title" style="margin-bottom:16px;">Your Schedule</div>
+      <div id="scheduleContent"></div>
+    </div>
+
+    <!-- HISTORY VIEW -->
+    <div id="viewHistory" style="display:none">
+      <div class="sec-title" style="margin-bottom:12px;">Booking History</div>
+      <div class="tabs">
+        <button class="tab active" onclick="setHistTab('past',this)">Past</button>
+        <button class="tab" onclick="setHistTab('declined',this)">Declined</button>
+      </div>
+      <div class="card-list" id="historyList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let TOKEN = localStorage.getItem('megToken');
+let DATA  = null;
+let histTab = 'past';
+
+// ── LOGIN ──
+document.getElementById('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = document.getElementById('loginErr');
+  err.style.display = 'none';
+  const r = await fetch('/api/admin/login', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ password: document.getElementById('pw').value })
+  });
+  if (!r.ok) { err.textContent='Wrong password. Try again.'; err.style.display='block'; return; }
+  const d = await r.json();
+  TOKEN = d.token;
+  localStorage.setItem('megToken', TOKEN);
+  showDash();
+});
+
+function logout() { localStorage.removeItem('megToken'); location.reload(); }
+
+async function showDash() {
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('shell').style.display = 'flex';
+  await loadData();
+}
+
+// ── DATA ──
+async function loadData() {
+  const r = await fetch('/api/admin/bookings', { headers:{'X-Admin-Token':TOKEN} });
+  if (r.status===401) return logout();
+  DATA = await r.json();
+  renderAll();
+}
+
+function renderAll() {
+  renderStats();
+  renderRequests();
+  if (document.getElementById('viewSchedule').style.display !== 'none') renderSchedule();
+  if (document.getElementById('viewHistory').style.display  !== 'none') renderHistory();
+}
+
+// ── STATS ──
+function renderStats() {
+  const s = DATA.stats;
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat ${s.pending>0?'urgent':''}">
+      <div class="stat-label">Needs Action</div>
+      <div class="stat-value">${s.pending}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Today</div>
+      <div class="stat-value">${s.today}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">This Week</div>
+      <div class="stat-value">${s.thisWeek}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">All Time</div>
+      <div class="stat-value">${s.allTime}</div>
+    </div>
+  `;
+}
+
+// ── REQUESTS ──
+function renderRequests() {
+  document.getElementById('pendingBadge').textContent   = DATA.pending.length;
+  document.getElementById('confirmedBadge').textContent = DATA.confirmed.length;
+
+  const pList = document.getElementById('pendingList');
+  pList.innerHTML = DATA.pending.length
+    ? DATA.pending.map(b => bookingCard(b,'pending')).join('')
+    : `<div class="empty"><div class="empty-icon">🎉</div>No pending requests right now!</div>`;
+
+  const cList = document.getElementById('confirmedList');
+  cList.innerHTML = DATA.confirmed.length
+    ? DATA.confirmed.map(b => bookingCard(b,'confirmed')).join('')
+    : `<div class="empty"><div class="empty-icon">📅</div>No upcoming confirmed consultations yet.</div>`;
+}
+
+function bookingCard(b, type) {
+  return `
+    <div class="booking-card ${type}" id="bc-${b.id}">
+      <div class="bc-top">
+        <div>
+          <div class="bc-name">${esc(b.client_name)}</div>
+          <div class="bc-goal">${esc(b.goal||'Goal not specified')}</div>
+        </div>
+        <div class="bc-datetime">
+          <div class="bc-date">${esc(b.dateFormatted)}</div>
+          <div class="bc-time">⏰ ${esc(b.timeFormatted)}</div>
+        </div>
+      </div>
+      <div class="bc-contact">
+        <span>📞 <a href="tel:${esc(b.client_phone)}">${esc(b.client_phone)}</a></span>
+        ${b.client_email ? `<span>✉️ <a href="mailto:${esc(b.client_email)}">${esc(b.client_email)}</a></span>` : ''}
+      </div>
+      ${type==='pending' ? `
+        <div class="bc-actions">
+          <button class="btn btn-sm btn-green" onclick="confirm('${b.id}')">✅ Confirm</button>
+          <button class="btn btn-sm btn-red"   onclick="decline('${b.id}')">❌ Decline</button>
+        </div>
+      ` : `
+        <div class="bc-actions">
+          <span class="status-tag tag-confirmed">✓ Confirmed</span>
+          <button class="btn btn-sm btn-outline" onclick="cancel('${b.id}')" style="margin-left:auto;">Cancel</button>
+        </div>
+      `}
+    </div>
+  `;
+}
+
+// ── SCHEDULE ──
+function renderSchedule() {
+  const container = document.getElementById('scheduleContent');
+  const today = new Date().toISOString().split('T')[0];
+  const tomorrow = new Date(Date.now()+86400000).toISOString().split('T')[0];
+
+  // Combine confirmed (upcoming) and past
+  const all = [...DATA.confirmed, ...DATA.past].sort((a,b) => {
+    if (a.date!==b.date) return a.date.localeCompare(b.date);
+    return a.time.localeCompare(b.time);
+  });
+
+  const upcoming = all.filter(b => b.date >= today);
+  const recent   = DATA.past.filter(b => {
+    const diff = (new Date(today) - new Date(b.date+'T00:00:00')) / 86400000;
+    return diff <= 14;
+  }).reverse();
+
+  if (!upcoming.length && !recent.length) {
+    container.innerHTML = `<div class="empty"><div class="empty-icon">📅</div>No confirmed consultations yet. Confirm some requests to see your schedule.</div>`;
+    return;
+  }
+
+  let html = '';
+
+  if (upcoming.length) {
+    // Group by date
+    const groups = {};
+    upcoming.forEach(b => { if (!groups[b.date]) groups[b.date]=[]; groups[b.date].push(b); });
+
+    Object.entries(groups).forEach(([date, bookings]) => {
+      const isToday    = date === today;
+      const isTomorrow = date === tomorrow;
+      const d = new Date(date+'T00:00:00');
+      const label = d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+      const prefix = isToday ? '📍 TODAY — ' : isTomorrow ? 'TOMORROW — ' : '';
+      html += `<div class="sched-day">
+        <div class="sched-label ${isToday?'today':''}">${prefix}${label}</div>
+        ${bookings.map(b => `
+          <div class="sched-item">
+            <div class="sched-time">${esc(b.timeFormatted)}</div>
+            <div class="sched-info">
+              <div class="sched-name">${esc(b.client_name)}</div>
+              <div class="sched-goal">${esc(b.goal||'Initial Consultation')}</div>
+              <div class="sched-contact">
+                <a href="tel:${esc(b.client_phone)}">📞 ${esc(b.client_phone)}</a>
+                ${b.client_email ? ` · <a href="mailto:${esc(b.client_email)}">✉️ ${esc(b.client_email)}</a>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+    });
+  }
+
+  if (recent.length) {
+    const rGroups = {};
+    recent.forEach(b => { if (!rGroups[b.date]) rGroups[b.date]=[]; rGroups[b.date].push(b); });
+    html += `<div style="margin-top:28px;"><div class="sec-title" style="font-size:17px;margin-bottom:14px;color:var(--muted);">Recent (last 14 days)</div>`;
+    Object.entries(rGroups).reverse().forEach(([date,bookings]) => {
+      const d = new Date(date+'T00:00:00');
+      const label = d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+      html += `<div class="sched-day" style="opacity:.55;">
+        <div class="sched-label">${label}</div>
+        ${bookings.map(b => `
+          <div class="sched-item">
+            <div class="sched-time">${esc(b.timeFormatted)}</div>
+            <div class="sched-info">
+              <div class="sched-name">${esc(b.client_name)}</div>
+              <div class="sched-goal">${esc(b.goal||'Initial Consultation')}</div>
+              <div class="sched-contact"><a href="tel:${esc(b.client_phone)}">📞 ${esc(b.client_phone)}</a></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+}
+
+// ── HISTORY ──
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const rows = DATA[histTab] || [];
+  list.innerHTML = rows.length
+    ? rows.map(b => {
+        const tag = b.status==='declined' ? 'tag-declined' : b.status==='cancelled' ? 'tag-cancelled' : 'tag-confirmed';
+        const label = b.status.charAt(0).toUpperCase() + b.status.slice(1);
+        return `<div class="booking-card past">
+          <div class="bc-top">
+            <div>
+              <div class="bc-name">${esc(b.client_name)}</div>
+              <div class="bc-goal">${esc(b.goal||'')}</div>
+            </div>
+            <div class="bc-datetime">
+              <div class="bc-date">${esc(b.dateFormatted)}</div>
+              <div class="bc-time">${esc(b.timeFormatted)}</div>
+            </div>
+          </div>
+          <div class="bc-contact">
+            <span>📞 <a href="tel:${esc(b.client_phone)}">${esc(b.client_phone)}</a></span>
+            ${b.client_email?`<span>✉️ ${esc(b.client_email)}</span>`:''}
+          </div>
+          <span class="status-tag ${tag}">${label}</span>
+        </div>`;
+      }).join('')
+    : `<div class="empty"><div class="empty-icon">—</div>Nothing here yet.</div>`;
+}
+
+function setHistTab(tab, el) {
+  histTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderHistory();
+}
+
+// ── ACTIONS ──
+async function confirm(id) {
+  if (!window.confirm('Confirm this consultation? The client will receive an email.')) return;
+  await doAction(`/api/admin/confirm/${id}`);
+}
+async function decline(id) {
+  if (!window.confirm('Decline this request? The client will be notified.')) return;
+  await doAction(`/api/admin/decline/${id}`);
+}
+async function cancel(id) {
+  if (!window.confirm('Cancel this confirmed consultation?')) return;
+  await doAction(`/api/admin/cancel/${id}`);
+}
+async function doAction(url) {
+  const r = await fetch(url, { method:'POST', headers:{'X-Admin-Token':TOKEN} });
+  if (r.status===401) return logout();
+  await loadData();
+}
+
+// ── VIEWS ──
+function showView(v) {
+  ['requests','schedule','history'].forEach(name => {
+    document.getElementById('view'+name.charAt(0).toUpperCase()+name.slice(1)).style.display = v===name?'block':'none';
+    document.getElementById('nav'+name.charAt(0).toUpperCase()+name.slice(1)).classList.toggle('active', v===name);
+  });
+  if (v==='schedule') renderSchedule();
+  if (v==='history')  renderHistory();
+}
+
+function exportCsv() {
+  window.open(`/api/admin/export?token=${encodeURIComponent(TOKEN)}`, '_blank');
+}
+function esc(s) {
+  return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+setInterval(()=>{ if(TOKEN) loadData(); }, 30000);
+if (TOKEN) showDash();
+</script>
+</body>
+</html>
