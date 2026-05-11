@@ -301,13 +301,13 @@ function bookingCard(b, type) {
       </div>
       ${type==='pending' ? `
         <div class="bc-actions">
-          <button class="btn btn-sm btn-green" onclick="confirm('${b.id}')">✅ Confirm</button>
-          <button class="btn btn-sm btn-red"   onclick="decline('${b.id}')">❌ Decline</button>
+          <button class="btn btn-sm btn-green" onclick="confirmReq('${b.id}')">✅ Confirm</button>
+          <button class="btn btn-sm btn-red"   onclick="declineReq('${b.id}')">❌ Decline</button>
         </div>
       ` : `
         <div class="bc-actions">
           <span class="status-tag tag-confirmed">✓ Confirmed</span>
-          <button class="btn btn-sm btn-outline" onclick="cancel('${b.id}')" style="margin-left:auto;">Cancel</button>
+          <button class="btn btn-sm btn-outline" onclick="cancelReq('${b.id}')" style="margin-left:auto;">Cancel</button>
         </div>
       `}
     </div>
@@ -433,15 +433,15 @@ function setHistTab(tab, el) {
 }
 
 // ── ACTIONS ──
-async function confirm(id) {
+async function confirmReq(id) {
   if (!window.confirm('Confirm this consultation? The client will receive an email.')) return;
   await doAction(`/api/admin/confirm/${id}`);
 }
-async function decline(id) {
+async function declineReq(id) {
   if (!window.confirm('Decline this request? The client will be notified.')) return;
   await doAction(`/api/admin/decline/${id}`);
 }
-async function cancel(id) {
+async function cancelReq(id) {
   if (!window.confirm('Cancel this confirmed consultation?')) return;
   await doAction(`/api/admin/cancel/${id}`);
 }
