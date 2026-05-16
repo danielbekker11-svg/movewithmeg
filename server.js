@@ -57,25 +57,42 @@ db.exec(`
 `);
 
 // ─── EMAIL ────────────────────────────────────
-let mailer = null;
-if (process.env.SMTP_HOST && process.env.SMTP_USER) {
-  mailer = nodemailer.createTransport({
-    host:   process.env.SMTP_HOST,
-    port:   parseInt(process.env.SMTP_PORT || '587'),
-    secure: parseInt(process.env.SMTP_PORT || '587') === 465,
-    auth:   { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-  });
-  console.log('✓ Email configured');
+// ─── EMAIL via Brevo HTTP API (bypasses SMTP port blocking) ──────────────────
+const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
+if (BREVO_API_KEY) {
+  console.log('✓ Email configured via Brevo API');
 } else {
-  console.log('⚠  Email not configured — set SMTP_* vars to enable emails');
+  console.log('⚠  Email not configured — set BREVO_API_KEY in Railway Variables');
 }
 
 async function sendEmail(to, subject, html) {
-  if (!mailer || !to) return false;
+  if (!BREVO_API_KEY || !to) return false;
   try {
-    await mailer.sendMail({ from: `"${CFG.fromName}" <${CFG.fromEmail}>`, to, subject, html });
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': BREVO_API_KEY,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        sender: { name: CFG.fromName, email: CFG.fromEmail },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+      }),
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      console.error('Email API error:', err);
+      return false;
+    }
+    console.log('✓ Email sent to', to);
     return true;
-  } catch(e) { console.error('Email error:', e.message); return false; }
+  } catch(e) {
+    console.error('Email error:', e.message);
+    return false;
+  }
 }
 
 // ─── HELPERS ──────────────────────────────────
@@ -324,7 +341,7 @@ app.get('/admin', (req,res) => res.sendFile(path.join(__dirname,'public','admin.
 
 // ─── REMINDER CRON ────────────────────────────
 cron.schedule('*/10 * * * *', async () => {
-  if (!mailer) return;
+  if (!BREVO_API_KEY) return;
   const now      = new Date();
   const tomorrow = new Date(now.getTime()+24*3600000).toISOString().split('T')[0];
   const due = db.prepare(
@@ -344,5 +361,5 @@ app.listen(PORT, () => {
   console.log(`\n  ✓ Move With Meg booking system`);
   console.log(`  ✓ Booking page: ${PUBLIC_URL}`);
   console.log(`  ✓ Dashboard:    ${PUBLIC_URL}/admin`);
-  console.log(`  ✓ Email:        ${mailer ? 'configured' : 'not configured'}\n`);
+  console.log(`  ✓ Email:        ${BREVO_API_KEY ? 'configured' : 'not configured'}\n`);
 });
